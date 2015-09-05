@@ -101,8 +101,16 @@ describe('validate-params', function(){
             expect(validate.arg([], 'array')).toBe(true);
         });
 
+        it('should correctly not validate arrays as objects', function(){
+            expect(validate.arg([], 'object')).toBe(false);
+        });
+
         it('should correctly validate dates', function(){
             expect(validate.arg(new Date(2000, 1, 1), 'date')).toBe(true);
+        });
+
+        it('should correctly not validate dates as objects', function(){
+            expect(validate.arg(new Date(2000, 1, 1), 'object')).toBe(false);
         });
 
         it('should correctly validate objects', function(){
@@ -126,19 +134,26 @@ describe('validate-params', function(){
     });
 
     describe('args', function(){
+        it('should fail when the provided object is not an object', function(){
+            expect(validate.args(undefined, {key: 'string'})).toBe(false);
+            expect(validate.args(42, {key: 'string'})).toBe(false);
+            expect(validate.args('nope, just Chuck Testa', {key: 'string'})).toBe(false);
+            expect(validate.args([], {key: 'string'})).toBe(false);
+        });
+
+        it('should fail when the provided spec is not an object', function(){
+            expect(validate.args({key: 'string'}, undefined)).toBe(false);
+            expect(validate.args({key: 'string'}, 42)).toBe(false);
+            expect(validate.args({key: 'string'}, 'nope, just Chuck Testa')).toBe(false);
+            expect(validate.args({key: 'string'}, [])).toBe(false);
+        });
+
         it('should return true when the argument is of the correct type and verbosity is low', function(){
             expect(validate.args({key: 'test'}, {key: 'string'})).toBe(true);
         });
 
         it('should return false when the argument is not of the correct type and verbosity is low', function(){
             expect(validate.args({key: 42}, {key: 'string'})).toBe(false);
-        });
-
-        it('should return false when the provided object is not an object', function(){
-            expect(validate.args(undefined, {key: 'string'})).toBe(false);
-            expect(validate.args(42, {key: 'string'})).toBe(false);
-            expect(validate.args('nope, just Chuck Testa', {key: 'string'})).toBe(false);
-            expect(validate.args([], {key: 'string'})).toBe(false);
         });
 
         it('should throw an error when the argument is of the wrong type and verbosity is high', function(){
