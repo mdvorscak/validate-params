@@ -2,6 +2,8 @@
  * Created by Mike Dvorscak on 9/4/2015.
  */
 var Validator = require('../index');
+var validate = Validator.validate;
+var assert = Validator.assert;
 
 describe('validate-params', function(){
 
@@ -40,95 +42,124 @@ describe('validate-params', function(){
 
     describe('validate instance', function(){
        it('should be an instance of the Validator class', function(){
-            expect(Validator.validate instanceof Validator.Validator).toBe(true);
+            expect(validate instanceof Validator.Validator).toBe(true);
        });
 
         it('should use low verbosity', function(){
-            expect(Validator.validate.verbosityLevel).toBe(Validator.LOW_VERBOSITY);
+            expect(validate.verbosityLevel).toBe(Validator.LOW_VERBOSITY);
         });
     });
 
     describe('assert instance', function(){
         it('should be an instance of the Validator class', function(){
-            expect(Validator.assert instanceof Validator.Validator).toBe(true);
+            expect(assert instanceof Validator.Validator).toBe(true);
         });
 
         it('should use high verbosity', function(){
-            expect(Validator.assert.verbosityLevel).toBe(Validator.HIGH_VERBOSITY);
+            expect(assert.verbosityLevel).toBe(Validator.HIGH_VERBOSITY);
         });
     });
 
     describe('arg', function(){
-        it('should return a string when the argument is of the wrong type and verbosity is low', function(){
+        it('should return true when the argument is of the correct type', function(){
+            expect(validate.arg('test', 'string')).toBe(true);
+        });
 
+        it('should return false when the argument is not of the correct type', function(){
+            expect(validate.arg({}, 'string')).toBe(false);
         });
 
         it('should throw an error when the argument is of the wrong type and verbosity is high', function(){
-
+            expect(function(){
+                assert.arg({}, 'string');
+            }).toThrow(Error('Expected type \'string\' but it was type \'object\''));
         });
 
         it('should accept an optional parameter to give a name to the argument to customize the return message', function(){
-
+            expect(function(){
+                assert.arg({}, 'string', 'test');
+            }).toThrow(Error('Expected \'test\' to be type \'string\' but it was type \'object\''));
         });
 
         it('should correctly validate strings', function(){
-
+            expect(validate.arg('test', 'string')).toBe(true);
         });
 
         it('should correctly validate booleans', function(){
-
+            expect(validate.arg(true, 'boolean')).toBe(true);
         });
 
-        it('should correctly validate ints', function(){
-
+        it('should correctly validate numbers', function(){
+            expect(validate.arg(42, 'number')).toBe(true);
         });
 
         it('should correctly validate arrays', function(){
-
+            expect(validate.arg([], 'array')).toBe(true);
         });
 
         it('should correctly validate dates', function(){
-
+            expect(validate.arg(new Date(2000, 1, 1), 'date')).toBe(true);
         });
 
         it('should correctly validate objects', function(){
+            expect(validate.arg({}, 'object')).toBe(true);
+        });
+    });
 
+    describe('errors', function(){
+        it('should return the error string for a single argument and verbosity is low', function(){
+            validate.arg({}, 'string');
+            expect(validate.errors).toBe('Expected type \'string\' but it was type \'object\'');
+        });
+
+        it('should return the previous error message when the verbosity is high', function(){
+            try{
+                assert.arg({}, 'string');
+            } catch(e){
+                expect(assert.errors).toBe(e.message);
+            }
         });
     });
 
     describe('args', function(){
-        it('should return a string when the arguments are of the wrong type and verbosity is low', function(){
-
+        it('should return true when the argument is of the correct type and verbosity is low', function(){
+            expect(validate.args({key: 'test'}, {key: 'string'})).toBe(true);
         });
 
-        it('should throw an error when the arguments are of the wrong type and verbosity is high', function(){
-
+        it('should return false when the argument is not of the correct type and verbosity is low', function(){
+            expect(validate.args({key: 42}, {key: 'string'})).toBe(false);
         });
 
-        it('should correctly validate strings', function(){
-
+        it('should return false when the provided object is not an object', function(){
+            expect(validate.args(undefined, {key: 'string'})).toBe(false);
+            expect(validate.args(42, {key: 'string'})).toBe(false);
+            expect(validate.args('nope, just Chuck Testa', {key: 'string'})).toBe(false);
+            expect(validate.args([], {key: 'string'})).toBe(false);
         });
 
-        it('should correctly validate booleans', function(){
-
+        it('should throw an error when the argument is of the wrong type and verbosity is high', function(){
+            expect(function(){
+                assert.args({key: 42}, {key: 'string'});
+            }).toThrow(Error('Expected property \'key\' to be type \'string\' but it was type \'number\''));
         });
 
-        it('should correctly validate ints', function(){
-
+        it('should correctly validate still return a positive validation for optional parameters', function(){
+            expect(validate.args({}, {key: {
+                kind: 'string',
+                optional: true
+            }})).toBe(true);
         });
 
-        it('should correctly validate arrays', function(){
-
+        it('should correctly validate nested objects when they are valid', function(){
+            expect(validate.args({key: 42, nest: {test: 'test'}}, {key: 'number', nest: {
+                test: 'string'
+            }})).toBe(true);
         });
 
-        it('should correctly validate dates', function(){
-
-        });
-
-        it('should correctly validate objects', function(){
-
+        it('should correctly validate nested objects when they are invalid', function(){
+            expect(validate.args({key: 42, nest: {test: 'test'}}, {key: 'string', nest: {
+                test: 'string'
+            }})).toBe(false);
         });
     });
-
-
 });
