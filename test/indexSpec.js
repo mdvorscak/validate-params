@@ -72,13 +72,17 @@ describe('validate-params', function(){
         it('should throw an error when the argument is of the wrong type and verbosity is high', function(){
             expect(function(){
                 assert.arg({}, 'string');
-            }).toThrow(Error('Expected type \'string\' but it was type \'object\''));
+            }).toThrow(Error('Expected type "string" but it was type "object"'));
+        });
+
+        it('should return true when the argument is of the right type and verbosity is high', function(){
+            expect(assert.arg('test', 'string')).toBe(true);
         });
 
         it('should accept an optional parameter to give a name to the argument to customize the return message', function(){
             expect(function(){
                 assert.arg({}, 'string', 'test');
-            }).toThrow(Error('Expected \'test\' to be type \'string\' but it was type \'object\''));
+            }).toThrow(Error('Expected "test" to be type "string" but it was type "object"'));
         });
 
         it('should correctly validate strings', function(){
@@ -109,7 +113,7 @@ describe('validate-params', function(){
     describe('errors', function(){
         it('should return the error string for a single argument and verbosity is low', function(){
             validate.arg({}, 'string');
-            expect(validate.errors).toBe('Expected type \'string\' but it was type \'object\'');
+            expect(validate.errors).toBe('Expected type "string" but it was type "object"');
         });
 
         it('should return the previous error message when the verbosity is high', function(){
@@ -140,12 +144,12 @@ describe('validate-params', function(){
         it('should throw an error when the argument is of the wrong type and verbosity is high', function(){
             expect(function(){
                 assert.args({key: 42}, {key: 'string'});
-            }).toThrow(Error('Expected property \'key\' to be type \'string\' but it was type \'number\''));
+            }).toThrow(Error('Expected property "key" to be type "string" but it was type "number"'));
         });
 
         it('should correctly validate still return a positive validation for optional parameters', function(){
             expect(validate.args({}, {key: {
-                kind: 'string',
+                type: 'string',
                 optional: true
             }})).toBe(true);
         });
