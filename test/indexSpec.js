@@ -40,21 +40,21 @@ describe('validate-params', function(){
 
     describe('validate instance', function(){
        it('should be an instance of the Validator class', function(){
-
+            expect(Validator.validate instanceof Validator.Validator).toBe(true);
        });
 
         it('should use low verbosity', function(){
-
+            expect(Validator.validate.verbosityLevel).toBe(Validator.LOW_VERBOSITY);
         });
     });
 
     describe('assert instance', function(){
         it('should be an instance of the Validator class', function(){
-
+            expect(Validator.assert instanceof Validator.Validator).toBe(true);
         });
 
         it('should use high verbosity', function(){
-
+            expect(Validator.assert.verbosityLevel).toBe(Validator.HIGH_VERBOSITY);
         });
     });
 
