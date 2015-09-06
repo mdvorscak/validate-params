@@ -28,6 +28,8 @@
     "browserify-istanbul": "^0.2.1",
     "coveralls": "^2.11.4",
     "gulp": "^3.9.0",
+    "gulp-jsdoc-to-markdown": "^1.1.1",
+    "gulp-rename": "^1.2.2",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.9",
     "karma-browserify": "^4.3.0",

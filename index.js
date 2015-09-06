@@ -1,6 +1,7 @@
-/**
+/*
  * Created by Mike Dvorscak on 9/2/2015.
  */
+
 var typeChecker = require('./lib/custom-type-checker');
 /** @constant {number} */
 var LOW_VERBOSITY = 0;
@@ -9,8 +10,8 @@ var HIGH_VERBOSITY = 1;
 
 /**
  *
- * @param [opts={}] {object}
- * @param [opts.verbosityLevel={@link LOW_VERBOSITY}] {number} - if set to {@link HIGH_VERBOSITY} validation failures
+ * @param [opts] {object} - options object
+ * @param [opts.verbosityLevel=LOW_VERBOSITY] {number} - if set to {@link HIGH_VERBOSITY} validation failures
  * will throw errors instead of returning false
  * @param [opts.errorClass=Error] {class} - custom error class to use instead of built-in Error
  * @constructor
@@ -18,16 +19,19 @@ var HIGH_VERBOSITY = 1;
 function Validator(opts){
     opts = opts || {};
     this.verbosityLevel = opts.verbosityLevel || LOW_VERBOSITY;
+    /**
+     * @property {class} ErrorClass - The error class to use when verbosity is high
+     */
     this.ErrorClass = opts.errorClass || Error;
 }
 
 /**
  *
- * @param item {object|array|string|number|date} - item to check the type of
- * @param expectedType - the expected type of the item
- * @param [argName=''] - an alias for item, used to customize the error if the validation fails
- * @throws - throws an instance of {@link Validator.ErrorClass} if the validation fails in high verbosity mode
- * @returns {boolean} - true if the item is the correct type, false otherwise.
+ * @param item {*} - item to check the type of
+ * @param expectedType {string} - the expected type of the item
+ * @param [argName=''] {string} - an alias for item, used to customize the error if the validation fails
+ * @throws throws an instance of {@link validator.ErrorClass} if the validation fails in high verbosity mode
+ * @returns {boolean} true if the item is the correct type, false otherwise
  */
 Validator.prototype.arg = function arg(item, expectedType, argName){
     var isCorrectType;
@@ -50,6 +54,13 @@ Validator.prototype.arg = function arg(item, expectedType, argName){
     return isCorrectType;
 };
 
+/**
+ *
+ * @param obj {Object} - Object to validate
+ * @param spec {Object} - Specification object, lists all keys and expected values
+ * @throws throws an instance of {@link validator.ErrorClass} if the validation fails in high verbosity mode
+ * @returns {boolean} true if the object matches the specification, false otherwise
+ */
 Validator.prototype.args = function args(obj, spec){
     var isValid, expectedType, isCurrentKeyValid, currentItem;
     isValid = this.arg(obj, 'object') && this.arg(spec, 'object');
