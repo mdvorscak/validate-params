@@ -4,7 +4,8 @@
   "description": "A small parameter validation library",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "coveralls": "cat ./coverage/**/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "keywords": [
     "parameter",
@@ -23,10 +24,14 @@
     }
   ],
   "devDependencies": {
+    "browserify": "^11.0.1",
+    "browserify-istanbul": "^0.2.1",
+    "coveralls": "^2.11.4",
     "gulp": "^3.9.0",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.9",
     "karma-browserify": "^4.3.0",
+    "karma-coverage": "^0.5.1",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.2.1",
     "phantomjs": "^1.9.18"

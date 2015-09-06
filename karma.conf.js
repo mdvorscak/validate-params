@@ -1,6 +1,8 @@
 // Karma configuration
 // Generated on Wed Sep 02 2015 22:13:48 GMT-0500 (Central Daylight Time)
 
+var istanbul = require('browserify-istanbul');
+
 module.exports = function(config) {
   config.set({
 
@@ -31,14 +33,23 @@ module.exports = function(config) {
     },
 
     browserify: {
-      debug: true
+      debug: true,
+      transform: [istanbul({
+        ignore: ['**/node_modules/**', '**/test/**']
+      })]
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
+
+    coverageReporter: {
+      reporters: [
+        { type: 'lcov' }
+      ]
+    },
 
 
     // web server port
