@@ -16,7 +16,12 @@
     "params"
   ],
   "author": "Mike Dvorscak",
-  "license": "MIT",
+  "license": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/mdvorscak/validate-params/blob/master/LICENSE"
+    }
+  ],
   "devDependencies": {
     "gulp": "^3.9.0",
     "jasmine-core": "^2.3.4",
