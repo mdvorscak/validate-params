@@ -1,8 +1,8 @@
 # validate-params
 **A small parameter validation library**
 
-The purpose of this library is to easily check that the contract of your functions is not violated; and if it is, to allow
-you to gracefully handle the situation (provide useful error messages).
+The purpose of this library is to easily check that the contract of your functions are not violated; and if they are,
+to allow you to gracefully handle the situation (provide useful error messages).
 
 [![Build Status][travis-image]][travis-url] [![Coveralls Status][coveralls-image]][coveralls-url]
 
@@ -13,7 +13,8 @@ var Validator = require('validate-params');
 // validating a single argument
 function simpleWrapper(callback){
     Validator.assert.arg(callback, 'function');
-    //Then do something with the callback later, at this point we can be sure that callback is a function
+    //Then do something with the callback later
+    //At this point we can be sure that callback is a function
 }
 
 simpleWrapper(42); //throws Error('Expected type "function" but it was type "number"')
