@@ -2,6 +2,10 @@
   "name": "validate-params",
   "version": "1.0.0",
   "description": "A small parameter validation library",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mdvorscak/validate-params"
+  },
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
@@ -17,12 +21,7 @@
     "params"
   ],
   "author": "Mike Dvorscak",
-  "license": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/mdvorscak/validate-params/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "devDependencies": {
     "browserify": "^11.0.1",
     "browserify-istanbul": "^0.2.1",
