@@ -51,19 +51,28 @@ Validator.prototype.arg = function arg(item, expectedType, argName){
 };
 
 Validator.prototype.args = function args(obj, spec){
-    var isValid, expectedType, isCurrentKeyValid;
+    var isValid, expectedType, isCurrentKeyValid, currentItem;
     isValid = this.arg(obj, 'object') && this.arg(spec, 'object');
 
     if(isValid){
         for(var key in spec){
             if(spec.hasOwnProperty(key)){
                 expectedType = spec[key];
+                currentItem = obj[key];
                 if(typeof expectedType === 'object'){
-                    //either the parameter is optional or nested
+                    //the parameter is optional
+                    if(expectedType.optional){
+                        isCurrentKeyValid = typeof currentItem === 'undefined' ||
+                            this.arg(currentItem, expectedType.type, key);
+                    }
+                    // the parameter is nested
+                    else {
+                        isCurrentKeyValid = this.args(currentItem, expectedType);
+                    }
                 }
                 // just normal validation
                 else {
-                    isCurrentKeyValid = this.arg(obj[key], expectedType, key);
+                    isCurrentKeyValid = this.arg(currentItem, expectedType, key);
                 }
                 // If one item fails, the whole thing fails
                 if(!isCurrentKeyValid){

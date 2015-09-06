@@ -159,7 +159,7 @@ describe('validate-params', function(){
         it('should throw an error when the argument is of the wrong type and verbosity is high', function(){
             expect(function(){
                 assert.args({key: 42}, {key: 'string'});
-            }).toThrow(Error('Expected property "key" to be type "string" but it was type "number"'));
+            }).toThrow(Error('Expected "key" to be type "string" but it was type "number"'));
         });
 
         it('should correctly validate still return a positive validation for optional parameters', function(){
@@ -176,8 +176,8 @@ describe('validate-params', function(){
         });
 
         it('should correctly validate nested objects when they are invalid', function(){
-            expect(validate.args({key: 42, nest: {test: 'test'}}, {key: 'string', nest: {
-                test: 'string'
+            expect(validate.args({key: 42, nest: {test: 'test'}}, {key: 'number', nest: {
+                test: 'number'
             }})).toBe(false);
         });
     });
