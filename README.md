@@ -4,7 +4,7 @@
 The purpose of this library is to easily check that the contract of your functions are not violated; and if they are,
 to allow you to gracefully handle the situation (provide useful error messages).
 
-[![Build Status][travis-image]][travis-url] [![Coveralls Status][coveralls-image]][coveralls-url]
+[![Build Status][travis-image]][travis-url] [![Coveralls Status][coveralls-image]][coveralls-url] [![Code Climate][cc-image]][cc-url]
 
 # Basic examples
 ```js
@@ -60,3 +60,6 @@ MIT - [view the full license here] (LICENSE)
 
 [coveralls-url]: https://coveralls.io/r/mdvorscak/validate-params?branch=master
 [coveralls-image]: https://coveralls.io/repos/mdvorscak/validate-params/badge.svg?branch=master
+
+[cc-url]: https://codeclimate.com/github/mdvorscak/validate-params
+[cc-image]: https://codeclimate.com/github/mdvorscak/validate-params/badges/gpa.svg

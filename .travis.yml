@@ -3,5 +3,9 @@ node_js:
   - "0.12"
   - "0.11"
   - "0.10"
+addons:
+  code_climate:
+    repo_token: d92f7df035e1822409982b8992389e722943ed74cd28c50295f027cbeb6f2362
 after_script:
   - npm run coveralls
+  - codeclimate-test-reporter < ./coverage/**/lcov.info
