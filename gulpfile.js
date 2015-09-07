@@ -19,7 +19,7 @@ gulp.task('test', function (done) {
 });
 
 gulp.task('tdd', function () {
-    gulp.watch(['index.js', 'test/**/*.js'], ['test']);
+    gulp.watch(['index.js', 'lib/**/*.js' ,'test/**/*.js'], ['test']);
 });
 
 gulp.task('docs', function(){
