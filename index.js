@@ -23,17 +23,19 @@ function Validator(opts){
      * @property {class} ErrorClass - The error class to use when verbosity is high
      */
     this.ErrorClass = opts.errorClass || Error;
+    /** @private {array} _errorArray - contains the current error messages, gets reset after every call */
+    this._errorArray = [];
 }
 
 /**
- *
+ * @private
  * @param item {*} - item to check the type of
  * @param expectedType {string} - the expected type of the item
  * @param [argName=''] {string} - an alias for item, used to customize the error if the validation fails
  * @throws throws an instance of {@link validator.ErrorClass} if the validation fails in high verbosity mode
  * @returns {boolean} true if the item is the correct type, false otherwise
  */
-Validator.prototype.arg = function arg(item, expectedType, argName){
+function internalValidation(item, expectedType, argName){
     var isCorrectType;
     var actualType = typeof item;
 
@@ -46,24 +48,53 @@ Validator.prototype.arg = function arg(item, expectedType, argName){
 
     argName = argName ? '"' + argName + '" to be ' : '';
     if(!isCorrectType){
-        this.errors = 'Expected ' + argName + 'type "' + expectedType + '" but it was type "' + actualType + '"';
-        if(this.verbosityLevel === HIGH_VERBOSITY){
-            throw new this.ErrorClass(this.errors);
-        }
+        this._errorArray.push('Expected ' + argName + 'type "' + expectedType + '" but it was type "' + actualType + '"');
     }
     return isCorrectType;
-};
+}
+
+/**
+ * @private
+ * @summary - throws errors if there are errors stored in the internal error array;
+ */
+function throwErrors(){
+    this.errors = this._errorArray.join(', ');
+    //reset the error object
+    this._errorArray = [];
+    if(this.verbosityLevel === HIGH_VERBOSITY && this.errors.length > 0){
+        throw new this.ErrorClass(this.errors);
+    }
+}
 
 /**
  *
+ * @param item {*} - item to check the type of
+ * @param expectedType {string} - the expected type of the item
+ * @param [argName=''] {string} - an alias for item, used to customize the error if the validation fails
+ * @throws throws an instance of {@link validator.ErrorClass} if the validation fails in high verbosity mode
+ * @returns {boolean} true if the item is the correct type, false otherwise
+ */
+Validator.prototype.arg = function arg(item, expectedType, argName){
+    var isValid = internalValidation.call(this, item, expectedType, argName);
+    throwErrors.call(this);
+    return isValid;
+};
+
+/**
+ * @private
  * @param obj {Object} - Object to validate
  * @param spec {Object} - Specification object, lists all keys and expected values
+ * @param recursiveCall {boolean} - used to determine the top level of validation
  * @throws throws an instance of {@link validator.ErrorClass} if the validation fails in high verbosity mode
  * @returns {boolean} true if the object matches the specification, false otherwise
  */
-Validator.prototype.args = function args(obj, spec){
+function internalArgs(obj, spec, recursiveCall){
     var isValid, expectedType, isCurrentKeyValid, currentItem;
-    isValid = this.arg(obj, 'object') && this.arg(spec, 'object');
+    var self = this;
+    function localIV(){
+        return internalValidation.apply(self, Array.prototype.slice.call(arguments));
+    }
+    isValid = localIV(obj, 'object') && localIV(spec, 'object');
 
     if(isValid){
         for(var key in spec){
@@ -74,16 +105,16 @@ Validator.prototype.args = function args(obj, spec){
                     //the parameter is optional
                     if(expectedType.optional){
                         isCurrentKeyValid = typeof currentItem === 'undefined' ||
-                            this.arg(currentItem, expectedType.type, key);
+                            localIV(currentItem, expectedType.type, key);
                     }
                     // the parameter is nested
                     else {
-                        isCurrentKeyValid = this.args(currentItem, expectedType);
+                        isCurrentKeyValid = internalArgs.call(this, currentItem, expectedType, true);
                     }
                 }
                 // just normal validation
                 else {
-                    isCurrentKeyValid = this.arg(currentItem, expectedType, key);
+                    isCurrentKeyValid = localIV(currentItem, expectedType, key);
                 }
                 // If one item fails, the whole thing fails
                 if(!isCurrentKeyValid){
@@ -92,8 +123,21 @@ Validator.prototype.args = function args(obj, spec){
             }
         }
     }
+    if(!recursiveCall){
+        throwErrors.call(this);
+    }
 
     return isValid;
+}
+
+/**
+ * @param obj {Object} - Object to validate
+ * @param spec {Object} - Specification object, lists all keys and expected values
+ * @throws throws an instance of {@link validator.ErrorClass} if the validation fails in high verbosity mode
+ * @returns {boolean} true if the object matches the specification, false otherwise
+ */
+Validator.prototype.args = function args(obj, spec){
+    return internalArgs.call(this, obj, spec, false);
 };
 
 

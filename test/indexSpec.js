@@ -180,5 +180,14 @@ describe('validate-params', function(){
                 test: 'number'
             }})).toBe(false);
         });
+
+        it('should mention all failing arguments', function(){
+            validate.args({key: 42, key2: 'ok', nest: {test: 'test'}}, {key: 'string', key2: 'object', nest: {
+                test: 'number'
+            }});
+            expect(validate.errors).toBe('Expected "key" to be type "string" but it was type "number",' +
+                ' Expected "key2" to be type "object" but it was type "string",' +
+                ' Expected "test" to be type "number" but it was type "string"');
+        });
     });
 });
