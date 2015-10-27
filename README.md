@@ -47,7 +47,19 @@ myCoolFunction({name: 'Jenny',
                 }
                });
 
+//There is also a less invasive variant of the validator
+function maybeCallback(callback){
+    var isCallbackAFunction = Validator.validate.arg(callback, 'function');
+    if(isCallbackAFunction){
+        //do some cool callback stuff
+    }
+}
+
+maybeCallback(5); //No error is thrown
 ```
+
+# Installation
+    npm install --save-dev validate-params
 
 # Documentation
 To learn more checkout the [documentation page] (docs/index.md)
