@@ -3,7 +3,12 @@ node_js:
   - "0.12"
   - "0.11"
   - "0.10"
+dist: trusty
+before_install:
+  # start your web application and listen on `localhost`
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 addons:
+  chrome: stable
   code_climate:
     repo_token: d92f7df035e1822409982b8992389e722943ed74cd28c50295f027cbeb6f2362
 after_script:
