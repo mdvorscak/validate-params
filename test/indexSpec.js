@@ -101,6 +101,12 @@ describe('validate-params', function(){
             expect(validate.arg([], 'array')).toBe(true);
         });
 
+        it('should return the correct type for arrays when they don\'t match', function(){
+            expect(function(){
+                expect(assert.arg([], 'object'));
+            }).toThrowError(/but it was type "array"/);
+        });
+
         it('should correctly not validate arrays as objects', function(){
             expect(validate.arg([], 'object')).toBe(false);
         });

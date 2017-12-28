@@ -38,14 +38,12 @@ function Validator(opts){
 function internalValidation(item, expectedType, argName){
     var isCorrectType;
     var actualType = typeof item;
-
-    var specialValFn = typeChecker[expectedType];
-    if(specialValFn){
-        isCorrectType = specialValFn(item);
-    } else {
-        isCorrectType = actualType === expectedType;
+    //Make sure it's really an object
+    if(actualType === 'object'){
+        actualType = typeChecker.getObjectsType(item);
     }
 
+    isCorrectType = actualType === expectedType;
     argName = argName ? '"' + argName + '" to be ' : '';
     if(!isCorrectType){
         this._errorArray.push('Expected ' + argName + 'type "' + expectedType + '" but it was type "' + actualType + '"');
