@@ -4,7 +4,7 @@
 The purpose of this library is to easily check that the contract of your functions are not violated; and if they are,
 to allow you to gracefully handle the situation (provide useful error messages).
 
-[![Build Status][travis-image]][travis-url] [![Coveralls Status][coveralls-image]][coveralls-url] [![Code Climate][cc-image]][cc-url]
+[![Build Status][travis-image]][travis-url] [![Coveralls Status][coveralls-image]][coveralls-url] [![Code Climate][cc-image]][cc-url] [![license][license-image]][license-url]
 
 # Basic examples
 ```js
@@ -64,14 +64,14 @@ maybeCallback(5); //No error is thrown
 # Documentation
 To learn more checkout the [documentation page](docs/index.md)
 
-# License
-MIT - [view the full license here](LICENSE)
-
 [travis-url]: https://travis-ci.org/mdvorscak/validate-params
-[travis-image]: https://travis-ci.org/mdvorscak/validate-params.svg?branch=master
+[travis-image]: https://img.shields.io/travis/mdvorscak/validate-params/master.svg?style=flat-square
 
 [coveralls-url]: https://coveralls.io/r/mdvorscak/validate-params?branch=master
-[coveralls-image]: https://coveralls.io/repos/mdvorscak/validate-params/badge.svg?branch=master
+[coveralls-image]: https://img.shields.io/coveralls/github/mdvorscak/validate-params/master.svg?style=flat-square
 
 [cc-url]: https://codeclimate.com/github/mdvorscak/validate-params
-[cc-image]: https://codeclimate.com/github/mdvorscak/validate-params/badges/gpa.svg
+[cc-image]: https://img.shields.io/codeclimate/maintainability/mdvorscak/validate-params.svg?style=flat-square
+
+[license-url]: LICENSE
+[license-image]: https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square
