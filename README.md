@@ -62,10 +62,10 @@ maybeCallback(5); //No error is thrown
     npm install --save-dev validate-params
 
 # Documentation
-To learn more checkout the [documentation page] (docs/index.md)
+To learn more checkout the [documentation page](docs/index.md)
 
 # License
-MIT - [view the full license here] (LICENSE)
+MIT - [view the full license here](LICENSE)
 
 [travis-url]: https://travis-ci.org/mdvorscak/validate-params
 [travis-image]: https://travis-ci.org/mdvorscak/validate-params.svg?branch=master
