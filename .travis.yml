@@ -2,9 +2,7 @@ language: node_js
 # required for now due to issues related to spectre  https://github.com/travis-ci/travis-ci/issues/9024
 sudo: required
 node_js:
-  - ""0.12"
-  - "0.11"
-  - "0.10""
+  - "lts/*"
 dist: trusty
 before_script:
   - "sudo chown root /opt/google/chrome/chrome-sandbox"
